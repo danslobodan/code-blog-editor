@@ -1,6 +1,6 @@
 import * as esbuild from "esbuild-wasm";
 import { useEffect, useRef, useState } from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { unpkgPathPlugin } from "./plugins/unpkg-path-plugin";
 import { fetchPlugin } from "./plugins/fetch-plugin";
 
@@ -51,4 +51,6 @@ const App = () => {
     );
 };
 
-ReactDOM.render(<App />, document.querySelector("#root"));
+const container = document.getElementById("app");
+const root = createRoot(container!);
+root.render(<App />);
