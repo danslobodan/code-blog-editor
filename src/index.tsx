@@ -6,12 +6,11 @@ import { fetchPlugin } from "./plugins/fetch-plugin";
 
 const App = () => {
     const [input, setInput] = useState("");
-    const [code, setCode] = useState("");
     const serviceRef = useRef<any>();
     const iframeRef = useRef<any>();
 
     const onClick = async () => {
-        if (!serviceRef.current) return;
+        if (!serviceRef.current || !iframeRef.current) return;
 
         const result = await serviceRef.current.build({
             entryPoints: ["index.js"],
@@ -24,6 +23,7 @@ const App = () => {
             },
         });
 
+        iframeRef.current.srcdoc = html;
         iframeRef.current.contentWindow.postMessage(
             result.outputFiles[0].text,
             "*"
@@ -71,7 +71,6 @@ const App = () => {
             <div>
                 <button onClick={onClick}>Submit</button>
             </div>
-            <pre>{code}</pre>
             <iframe
                 ref={iframeRef}
                 title="User Code"
