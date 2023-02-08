@@ -8,6 +8,7 @@ const App = () => {
     const [input, setInput] = useState("");
     const [code, setCode] = useState("");
     const serviceRef = useRef<any>();
+    const iframeRef = useRef<any>();
 
     const onClick = async () => {
         if (!serviceRef.current) return;
@@ -23,7 +24,10 @@ const App = () => {
             },
         });
 
-        setCode(result.outputFiles[0].text);
+        iframeRef.current.contentWindow.postMessage(
+            result.outputFiles[0].text,
+            "*"
+        );
     };
 
     const startService = async () => {
@@ -37,9 +41,24 @@ const App = () => {
         startService();
     }, []);
 
+    const html = `
+        <html>
+            <head></head>
+            <body>
+                <div id="root"></div>
+                <script>
+                    window.addEventListener('message', (event) => {
+                        eval(event.data)
+                    }, false);
+                </script>
+            </body>
+        </html>    
+    `;
+
     return (
         <div>
             <textarea
+                style={{ width: "600px", height: "300px" }}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
             ></textarea>
@@ -47,6 +66,12 @@ const App = () => {
                 <button onClick={onClick}>Submit</button>
             </div>
             <pre>{code}</pre>
+            <iframe
+                ref={iframeRef}
+                title="User Code"
+                sandbox="allow-scripts"
+                srcDoc={html}
+            />
         </div>
     );
 };
