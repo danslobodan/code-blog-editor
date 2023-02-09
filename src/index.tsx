@@ -2,9 +2,9 @@ import "bulmaswatch/superhero/bulmaswatch.min.css";
 
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
+
 import CodeEditor from "./components/code-editor";
 import bundle from "./bundler";
-
 import Preview from "./components/preview";
 
 const App = () => {
