@@ -9,11 +9,13 @@ import Resisable from "./resizable";
 const CodeCell = () => {
     const [input, setInput] = useState("");
     const [code, setCode] = useState("");
+    const [err, setErr] = useState("");
 
     useEffect(() => {
         const timer = setTimeout(async () => {
             const output = await bundle(input);
-            setCode(output);
+            setCode(output.code);
+            setErr(output.err);
         }, 750);
 
         return () => {
@@ -36,7 +38,7 @@ const CodeCell = () => {
                         onChange={(value) => setInput(value)}
                     />
                 </Resisable>
-                <Preview code={code} />
+                <Preview code={code} err={err} />
             </div>
         </Resisable>
     );
