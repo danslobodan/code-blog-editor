@@ -33,7 +33,7 @@ const Resisable: React.FC<Props> = ({ direction, children }) => {
         return () => {
             window.removeEventListener("resize", listener);
         };
-    }, []);
+    }, [width]);
 
     if (direction === "horizontal") {
         resizableProps = {
