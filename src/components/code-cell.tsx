@@ -2,6 +2,7 @@ import "./code-cell.css";
 import { useEffect } from "react";
 import { useActions } from "../hooks/use-actions";
 import { useTypedSelector } from "../hooks/use-typed-selector";
+import { useCumulativeCode } from "../hooks/use-cumulative-code";
 
 import CodeEditor from "./code-editor";
 import Preview from "./preview";
@@ -16,22 +17,23 @@ interface Props {
 const CodeCell: React.FC<Props> = ({ cell }) => {
     const { updateCell, createBundle } = useActions();
     const bundle = useTypedSelector((state) => state.bundles[cell.id]);
+    const cumulativeCode = useCumulativeCode(cell.id);
 
     useEffect(() => {
         if (!bundle) {
-            createBundle(cell.id, cell.content);
+            createBundle(cell.id, cumulativeCode);
             return;
         }
 
         const timer = setTimeout(async () => {
-            createBundle(cell.id, cell.content);
+            createBundle(cell.id, cumulativeCode);
         }, 750);
 
         return () => {
             clearTimeout(timer);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [cell.id, cell.content, createBundle]);
+    }, [cell.id, cumulativeCode, createBundle]);
 
     return (
         <Resisable direction="vertical">
