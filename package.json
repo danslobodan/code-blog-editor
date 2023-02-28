@@ -1,6 +1,9 @@
 {
-  "devDependencies": {
-    "lerna": "^3.22.1"
-  },
-  "name": "code-blog-editor"
+    "devDependencies": {
+        "lerna": "^3.22.1"
+    },
+    "name": "code-blog-editor",
+    "scripts": {
+        "start": "lerna run start --parallel"
+    }
 }
