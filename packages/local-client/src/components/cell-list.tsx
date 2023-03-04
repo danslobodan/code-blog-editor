@@ -1,13 +1,20 @@
-import "./cell-list.css";
-import { Fragment } from "react";
-import { useTypedSelector } from "../hooks/use-typed-selector";
-import CellListItem from "./cell-list-item";
-import AddCell from "./add-cell";
+import './cell-list.css';
+import { useEffect, Fragment } from 'react';
+import { useTypedSelector } from '../hooks/use-typed-selector';
+import CellListItem from './cell-list-item';
+import AddCell from './add-cell';
+import { useActions } from '../hooks/use-actions';
 
 const CellList: React.FC = () => {
     const cells = useTypedSelector(({ cells: { order, data } }) =>
         order.map((id) => data[id])
     );
+
+    const { fetchCells } = useActions();
+
+    useEffect(() => {
+        fetchCells();
+    }, []);
 
     const renderedCells = cells.map((cell) => (
         <Fragment key={cell.id}>
@@ -17,7 +24,7 @@ const CellList: React.FC = () => {
     ));
 
     return (
-        <div className="cell-list">
+        <div className='cell-list'>
             <AddCell
                 forceVisible={renderedCells.length === 0}
                 previousCellId={null}

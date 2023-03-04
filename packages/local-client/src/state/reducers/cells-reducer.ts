@@ -1,7 +1,7 @@
-import { ActionType } from "../action-types";
-import { Action } from "../actions";
-import { Cell } from "../cell";
-import produce from "immer";
+import { ActionType } from '../action-types';
+import { Action } from '../actions';
+import { Cell } from '../cell';
+import produce from 'immer';
 
 interface CellsState {
     loading: boolean;
@@ -22,6 +22,24 @@ const initialState: CellsState = {
 const reducer = produce(
     (state: CellsState = initialState, action: Action): CellsState => {
         switch (action.type) {
+            case ActionType.SAVE_CELLS_ERROR:
+                state.error = action.payload;
+                return state;
+            case ActionType.FETCH_CELLS:
+                state.loading = true;
+                state.error = null;
+                return state;
+            case ActionType.FETCH_CELLS_COMPLETE:
+                state.order = action.payload.map((cell) => cell.id);
+                state.data = action.payload.reduce((acc, cell) => {
+                    acc[cell.id] = cell;
+                    return acc;
+                }, {} as CellsState['data']);
+                return state;
+            case ActionType.FETCH_CELLS_ERROR:
+                state.loading = false;
+                state.error = action.payload;
+                return state;
             case ActionType.UPDATE_CELL:
                 const { id, content } = action.payload;
                 state.data[id].content = content;
@@ -35,7 +53,7 @@ const reducer = produce(
                 const index = state.order.findIndex(
                     (id) => id === action.payload.id
                 );
-                const targetIndex = direction === "up" ? index - 1 : index + 1;
+                const targetIndex = direction === 'up' ? index - 1 : index + 1;
 
                 if (targetIndex < 0 || targetIndex > state.order.length - 1) {
                     return state;
@@ -49,7 +67,7 @@ const reducer = produce(
                 const cell: Cell = {
                     id: randomId(),
                     type: action.payload.type,
-                    content: "",
+                    content: '',
                 };
 
                 state.data[cell.id] = cell;
