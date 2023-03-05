@@ -23,7 +23,9 @@ export const serve = (
         );
     } else {
         console.log('using build');
-        const packagePath = require.resolve('local-client/build/index.html');
+        const packagePath = require.resolve(
+            '@jsnote-sg-org/local-client/build/index.html'
+        );
         app.use(express.static(path.dirname(packagePath)));
     }
 

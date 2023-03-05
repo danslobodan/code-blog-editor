@@ -1,19 +1,28 @@
 {
-    "name": "cli",
+    "name": "jsnote-sg-rts-course",
     "version": "1.0.0",
     "description": "",
+    "bin": "dist/index.js",
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "dist"
+    ],
     "scripts": {
         "start": "tsc --watch --preserveWatchOutput",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "prepublishOnly": "esbuild src/index.ts --platform=node --outfile=dist/index.js --bundle --minify --define:process.env.NODE_ENV=\\\"production\\\""
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "devDependencies": {
-        "typescript": "^4.9.5"
+        "esbuild": "0.8.26",
+        "typescript": "^4.9.5",
+        "@jsnote-sg-org/local-api": "^1.0.0",
+        "commander": "^10.0.0"
     },
     "dependencies": {
-        "commander": "^10.0.0",
-        "local-api": "^1.0.0"
+        "@jsnote-sg-org/local-client": "^1.0.0"
     }
 }
